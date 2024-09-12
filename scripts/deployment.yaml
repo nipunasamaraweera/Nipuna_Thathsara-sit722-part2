@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-catalog
+  template:
+    metadata:
+      labels:
+        app: book-catalog
+    spec:
+      containers:
+      - name: book-catalog
+        image: week_7.p
+        ports:
+        - containerPort: 8000
+        imagePullPolicy: Never
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://nipuna_sit722_part2_user:OS5qQqtAn0wxPG7VFZ82Jz2sLo6kXDX9@dpg-crh9632j1k6c73dtij7g-a.oregon-postgres.render.com/nipuna_sit722_part2"
+---
+apiVersion: v1  # Corrected API version
+kind: Service
+metadata:
+  name: book-catalog
+spec:
+  selector:
+    app: book-catalog
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
